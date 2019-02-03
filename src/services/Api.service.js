@@ -1,21 +1,27 @@
 import axios from 'axios';
 
 class ApiService {
-
-    static async get(url,config){
-        return axios.get(url,config);
+    
+    static getConfig(){
+        return {
+            headers: {'Authorization': "Bearer " + localStorage.getItem('token')}
+        };
     }
 
-    static async post(url,params,data){
-        return axios.post(url,{params,data});
+    static async get(url,params){
+        return axios.get(url,{params,...(this.getConfig())});
     }
 
-    static async put(url,params,data){
-        return axios.put(url,{params,data});
+    static async post(url,data,params){
+        return axios.post(url,data,{params,...(this.getConfig())});
+    }
+
+    static async put(url,data,params){
+        return axios.put(url,data,{params,...(this.getConfig())});
     }
 
     static async delete(url,params){
-        return axios.delete(url,{params});
+        return axios.delete(url,{params,...(this.getConfig())});
     }
 }
 

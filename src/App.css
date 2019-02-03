@@ -8,28 +8,33 @@
   border-right: 1px solid black;
 }
 
+.centerItem {
+  display: flex;
+  justify-content: center;
+}
+
 .price {
-    display: flex;
-    justify-content:center;
-    align-content:center;
-    flex-direction:column;
-    margin-top: 8%;
-    margin-bottom: 8%;
-    text-align: right;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-top: 8%;
+  margin-bottom: 8%;
+  text-align: right;
 }
 
 .buttons {
   display: flex;
-    justify-content:center;
-    align-content:center;
-    flex-direction:column;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 .singleButton {
-  margin-bottom: 1.5px
+  margin-bottom: 1.5px;
 }
 
 .singleButtonOther {
-  margin-top: 1.5px
+  margin-top: 1.5px;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -55,11 +60,6 @@
   float: right;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.errorText {
+  color: #c12e2a;
 }

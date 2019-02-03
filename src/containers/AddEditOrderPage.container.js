@@ -1,7 +1,19 @@
 
 import React from 'react';
+import { connect } from "react-redux";
 
 import AddEditOrder from '../components/AddEditOrder/AddEditOrder.component';
+import {
+  fetchItemsPerOrder, 
+  addNewItemToCurrentOrder,
+  updateItemQuantity,
+  updateItemId,
+  removeItemFromCurrentOrder,
+  updateOrder,
+  deleteOrder,
+ } from '../actions/orderActions';
+import {fetchItems} from '../actions/itemActions';
+
 
 class AddEditOrderPage extends React.Component {
   constructor(props){
@@ -39,54 +51,76 @@ class AddEditOrderPage extends React.Component {
   }
 
   handleorderItemselectionUpdate = (index, e) => {
-    let {orderItems} = this.state;
-    orderItems[index].id = Number(e.target.value);
-    this.setState({
-      orderItems
-    })
+    this.props.dispatch(updateItemId(index,e.target.value));
   }
 
   handleItemRemove = (indexToRemove) => {
-    const neworderItems = this.state.orderItems.filter((item,index)=>index!==indexToRemove);
-
-    this.setState({
-      orderItems : neworderItems
-    });
+    this.props.dispatch(removeItemFromCurrentOrder(indexToRemove));
   }
 
   handleItemQuantityUpdate = (index, e) => {
-    let {orderItems} = this.state;
-    orderItems[index].itemQuantity = e.target.value;
-    this.setState({
-      orderItems
-    })
+      this.props.dispatch(updateItemQuantity(index, e.target.value));
   }
 
   handleAddNewItem = () => {
-    const {orderItems} = this.state;
-    this.setState({
-      orderItems : [...orderItems,
-        {
-          id: -1,
-          itemName:null,
-          itemPrice: null,
-          itemQuantity: null,
-        }]
-    })
+    this.props.dispatch(addNewItemToCurrentOrder());
+  }
+
+  handleSaveOrder = () => {
+    const {currentOrderItems, match : {params : {id}}} = this.props;
+    let itemsTobeSaved = currentOrderItems.filter(item=>(item.id !== -1 && (item.itemQuantity && item.itemQuantity > 0)))
+    this.props.dispatch(updateOrder(id,itemsTobeSaved))
+  }
+
+  handleDeleteOrder = () => {
+    const {match : {params : {id}}} = this.props;
+    this.props.dispatch(deleteOrder(id));
+  }
+
+  handleNavigationBack = () => {
+    this.props.history.push('/orders')
+  }
+
+  componentDidMount(){
+    const { match : {params : {id}}} = this.props;
+    this.props.dispatch(fetchItems());
+    this.props.dispatch(fetchItemsPerOrder(id));
+  }
+
+  componentWillUnmount(){
+    const {currentOrderItems} = this.props;
+    if(currentOrderItems.length > 0){
+      this.handleSaveOrder();
+    }
+    else{
+      console.log("Hi")
+      this.handleDeleteOrder();
+    }
   }
 
   render(){
     return (
     <AddEditOrder 
       tableHeader={"New Order"}
-      items={this.state.items}
-      orderItems={this.state.orderItems}
+      items={this.props.items}
+      orderItems={this.props.currentOrderItems}
+      loading={this.props.loading}
+
+      handleAddNewItem={this.handleAddNewItem}
       handleorderItemselectionUpdate={this.handleorderItemselectionUpdate}
       handleItemQuantityUpdate={this.handleItemQuantityUpdate}
       handleItemRemove={this.handleItemRemove}
+      onNavigateBack={this.handleNavigationBack}
+      onLogOut={this.handleLogout}
     />
-  );
+    )
   }
 }
 
-export default AddEditOrderPage;
+const mapStateToProps = state => ({
+  items: state.items.items,
+  currentOrderItems: state.orders.currentOrderItems,
+  loading: state.orders.loading,
+});
+
+export default connect(mapStateToProps)(AddEditOrderPage);
