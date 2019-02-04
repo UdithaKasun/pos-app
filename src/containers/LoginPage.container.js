@@ -17,6 +17,22 @@ class LoginPage extends Component {
     this.handleUserAuthentication = this.handleUserAuthentication.bind(this);
   }
 
+  // async componentDidMount() {
+  //   const storedToken = localStorage.getItem("token");
+  //   const {
+  //     user: { token, authenticated },
+  //     history
+  //   } = this.props;
+  //   if ((!token || !authenticated) && storedToken) {
+  //     try {
+  //       await UserService.verifyToken(storedToken);
+  //       history.push("/orders");
+  //     } catch (error) {
+  //       this.props.dispatch(verifyTokenFailure(error.response.data));
+  //     }
+  //   }
+  // }
+
   handleUserNameChange(event) {
     this.setState({
       username: event.target.value

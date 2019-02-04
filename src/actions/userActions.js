@@ -58,7 +58,6 @@ export const verfiyToken = token => {
       await UserService.verifyToken(token);
       dispatch(verifyTokenSuccess(token));
     } catch (err) {
-      //localStorage.removeItem('token');
       dispatch(verifyTokenFailure(err));
     }
   };

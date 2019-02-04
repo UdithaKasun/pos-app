@@ -13,6 +13,10 @@
   justify-content: center;
 }
 
+.rightItem {
+  text-align: right;
+}
+
 .price {
   display: flex;
   justify-content: center;
@@ -25,8 +29,8 @@
 
 .buttons {
   display: flex;
-  justify-content: center;
-  align-content: center;
+  justify-content: right;
+  align-content: right;
   flex-direction: column;
 }
 .singleButton {

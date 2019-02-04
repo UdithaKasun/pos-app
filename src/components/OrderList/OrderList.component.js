@@ -22,6 +22,19 @@ const renderDate = date => {
     inputDate.getSeconds();
   return formatteddate + " " + formattedTime;
 };
+
+const resolveOrderTotalCost = (currentOrderItems, items) => {
+  let totalCost = 0;
+  currentOrderItems.forEach(orderItem => {
+    if (orderItem.id !== -1 && orderItem.itemQuantity > 0) {
+      totalCost +=
+        items.filter(item => item.id === Number(orderItem.id))[0].itemPrice *
+        orderItem.itemQuantity;
+    }
+  });
+  return totalCost;
+};
+
 const OrderListComponent = ({
   orders,
   loading,
